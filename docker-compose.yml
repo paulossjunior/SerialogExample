@@ -1,0 +1,22 @@
+﻿services:
+  serialogexample:
+    image: serialogexample
+    build:
+      context: .
+      dockerfile: SerialogExample/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Serilog__WriteTo__1__Name=Seq
+      - Serilog__WriteTo__1__Args__serverUrl=http://seq:5341
+    depends_on:
+      - seq
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+      # Opcional: definir uma senha de admin
+      # - SEQ_FIRSTRUN_ADMINPASSWORDHASH=seu_hash_aqui
